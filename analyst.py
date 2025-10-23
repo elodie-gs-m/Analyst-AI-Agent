@@ -6,9 +6,7 @@ Created on Mon Oct 13 11:43:44 2025
 """
 
 #%% Import Packages
-
 import os
-#from dotenv import load_dotenv
 import streamlit as st
 from pydantic import BaseModel, Field
 from pydantic import ValidationError
@@ -26,21 +24,23 @@ from io import StringIO
 from contextlib import redirect_stdout
 from typing import Dict
 
-#%% Load Environment Variables
-#load_dotenv()
 
 # %% Initialize Model
 
-api_key_str=''
-def get_api_key(key_str: str) -> str:
-   api_key_str = key_str
-   return api_key_str
-
-model = OpenAIModel('gpt-4.1', provider=OpenAIProvider(api_key=api_key_str))
-
-def updatemodel_api_key(key_str: str):
-   model = OpenAIModel('gpt-4.1', provider=OpenAIProvider(api_key=key_str))
-
+def init_agent(api_key: str):
+    global analyst_agent
+    model = OpenAIModel('gpt-4.1', provider=OpenAIProvider(api_key=api_key))
+    analyst_agent = Agent(
+        model=model,
+        tools=[
+            Tool(get_columns, takes_ctx=False),
+            Tool(get_column_description, takes_ctx=False),
+            Tool(graph_generator, takes_ctx=False),
+            Tool(python_execution_tool, takes_ctx=False)
+        ],
+        deps_type=State,
+        instrument=True
+    )
 
 # %% Define Agent State
 @dataclass
@@ -122,18 +122,6 @@ class AnalystAgentOutput(BaseModel):
     image_png_path: str = Field(description="The path of the graph in png format, if no graph is generated, return empty string")
     conclusion: str = Field(description="The conclusion of the analysis")
 
-# 2) Create the agent
-analyst_agent = Agent(
-    model=model,
-    tools=[
-        Tool(get_columns, takes_ctx=False), 
-        Tool(get_column_description, takes_ctx=False),
-        Tool(graph_generator, takes_ctx=False),
-        Tool(python_execution_tool, takes_ctx=False)
-    ],
-    deps_type=State,
-    instrument=True
-    )
 
 #%% Create Agent's Prompt
 
@@ -242,6 +230,8 @@ async def get_analyst_agent_system_prompt(ctx: RunContext[State]):
 #%% Run Agent
 
 def run_full_agent(user_query: str, dataset_path: str, dataset_meta: str) -> AnalystAgentOutput:
+    if analyst_agent is None:
+        raise RuntimeError("Agent not initialized. Call init_agent(api_key) first.")
     state = State(user_query=user_query, file_name=dataset_path, column_dict=dataset_meta)
     response = analyst_agent.run_sync(deps=state)
     try:
