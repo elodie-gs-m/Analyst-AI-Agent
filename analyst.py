@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 from io import StringIO
 from contextlib import redirect_stdout
 from typing import Dict
-
+import json
 
 # %% Initialize Model
 analyst_agent: Agent
@@ -243,14 +243,13 @@ def run_full_agent(user_query: str, dataset_path: str, dataset_meta: str) -> Ana
         raise RuntimeError("Agent not initialized. Call init_agent(api_key) first.")
     state = State(user_query=user_query, file_name=dataset_path, column_dict=dataset_meta)
     response = analyst_agent.run_sync(deps=state)
+    raw_output = response.output
     try:
-        # Use structured_output, not .data
-        output = AnalystAgentOutput(**response.structured_output)
-    except ValidationError as e:
+        parsed_data = json.loads(raw_output)
+        output = AnalystAgentOutput(**parsed_data)
+    except Exception as e:
         print("Failed to parse agent output:", e)
-        print("Raw response:", response)
+        print("Raw output:", raw_output)
         raise
-
-
     return output
 
