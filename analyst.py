@@ -38,6 +38,9 @@ def get_api_key(key_str: str) -> str:
 
 model = OpenAIModel('gpt-4.1', provider=OpenAIProvider(api_key=api_key_str))
 
+def updatemodel_api_key(key_str: str):
+   model = OpenAIModel('gpt-4.1', provider=OpenAIProvider(api_key=key_str))
+
 
 # %% Define Agent State
 @dataclass

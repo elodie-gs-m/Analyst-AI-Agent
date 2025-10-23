@@ -13,7 +13,7 @@ import tempfile
 from datetime import datetime
 from pathlib import Path
 import asyncio
-from analyst import run_full_agent, get_api_key
+from analyst import run_full_agent, get_api_key, updatemodel_api_key
 from dictionaries import load_column_dict
 import base64
 from typing import Optional
@@ -76,6 +76,7 @@ def main():
                                      ('Food Delivery', 'Customer Conversion', 'Mobile Coverage'))
         
         if selected_file is not None:
+            updatemodel_api_key(api_key_str)
             new_dict = load_column_dict(selected_file)
             if selected_file == 'Food Delivery':
                 file_path = 'Data/foodhub_order.csv'
