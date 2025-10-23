@@ -9,7 +9,7 @@ Created on Mon Oct 13 11:43:44 2025
 
 import os
 from dotenv import load_dotenv
-from streamlit_analyst_app import get_api_key
+import streamlit as st
 from pydantic import BaseModel, Field
 from typing import List
 from pydantic_ai import Agent, RunContext, Tool
@@ -31,9 +31,9 @@ load_dotenv()
 # %% Initialize Model
 #model = OpenAIModel('gpt-4.1', provider=OpenAIProvider(api_key=os.getenv('OPENAI_API_KEY')))
 
-api_key_str = get_api_key()
+api_key_str = st.secrets["OPENAI_API_KEY"]
 model = OpenAIModel('gpt-4.1', provider=OpenAIProvider(api_key=api_key_str))
-
+#api_key_str = get_api_key()
 
 # %% Define Agent State
 @dataclass

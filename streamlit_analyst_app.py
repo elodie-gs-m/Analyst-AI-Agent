@@ -27,11 +27,9 @@ pio.templates.default = "custom"
 pio.templates["custom"].layout.autosize = True
 
 #%% Setup Environment Variables
-api_key =  st.secrets["OPENAI_API_KEY"]
-
-def get_api_key() -> str:
-    """Retrieve API key from Streamlit secrets"""
-    return api_key
+#api_key = ''
+#api_key = st.secrets["OPENAI_API_KEY"]
+#def get_api_key() -> str: return api_key
 
 #%% Setup UI
 st.set_page_config(
