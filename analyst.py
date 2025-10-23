@@ -8,7 +8,7 @@ Created on Mon Oct 13 11:43:44 2025
 #%% Import Packages
 
 import os
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 import streamlit as st
 from pydantic import BaseModel, Field
 from typing import List
@@ -26,7 +26,7 @@ from contextlib import redirect_stdout
 from typing import Dict
 
 #%% Load Environment Variables
-load_dotenv()
+#load_dotenv()
 
 # %% Initialize Model
 #model = OpenAIModel('gpt-4.1', provider=OpenAIProvider(api_key=os.getenv('OPENAI_API_KEY')))
