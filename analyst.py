@@ -26,10 +26,7 @@ from typing import Dict
 
 
 # %% Initialize Model
-from types import SimpleNamespace
-
-analyst_agent = SimpleNamespace()
-analyst_agent.system_prompt = "."
+analyst_agent: Agent
 
 def init_agent(api_key: str):
     global analyst_agent
