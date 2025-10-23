@@ -27,6 +27,7 @@ from typing import Dict
 
 # %% Initialize Model
 
+analyst_agent = None
 def init_agent(api_key: str):
     global analyst_agent
     model = OpenAIModel('gpt-4.1', provider=OpenAIProvider(api_key=api_key))
