@@ -13,7 +13,7 @@ import tempfile
 from datetime import datetime
 from pathlib import Path
 import asyncio
-from analyst import run_full_agent
+from analyst import run_full_agent, get_api_key
 from dictionaries import load_column_dict
 import base64
 from typing import Optional
@@ -27,9 +27,9 @@ pio.templates.default = "custom"
 pio.templates["custom"].layout.autosize = True
 
 #%% Setup Environment Variables
-#api_key = ''
-#api_key = st.secrets["OPENAI_API_KEY"]
-#def get_api_key() -> str: return api_key
+
+api_key_str = st.secrets["OPENAI_API_KEY"]
+get_api_key(api_key_str)
 
 #%% Setup UI
 st.set_page_config(

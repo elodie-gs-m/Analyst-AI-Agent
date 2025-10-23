@@ -29,11 +29,14 @@ from typing import Dict
 #load_dotenv()
 
 # %% Initialize Model
-#model = OpenAIModel('gpt-4.1', provider=OpenAIProvider(api_key=os.getenv('OPENAI_API_KEY')))
 
-api_key_str = st.secrets["OPENAI_API_KEY"]
+api_key_str=''
+def get_api_key(key_str: str) -> str:
+   api_key_str = key_str
+   return api_key_str
+
 model = OpenAIModel('gpt-4.1', provider=OpenAIProvider(api_key=api_key_str))
-#api_key_str = get_api_key()
+
 
 # %% Define Agent State
 @dataclass
