@@ -128,7 +128,6 @@ analyst_agent = Agent(
         Tool(python_execution_tool, takes_ctx=False)
     ],
     deps_type=State,
-    result_type=AnalystAgentOutput,
     instrument=True
     )
 
@@ -239,7 +238,7 @@ async def get_analyst_agent_system_prompt(ctx: RunContext[State]):
 #%% Run Agent
 def run_full_agent(user_query: str, dataset_path: str, dataset_meta: str) -> AnalystAgentOutput:
     state = State(user_query=user_query, file_name=dataset_path, column_dict=dataset_meta)
-    response = analyst_agent.run_sync(deps=state)
+    response = analyst_agent.run_sync(deps=state, result_type=AnalystAgentOutput)
     print(response)
     response_data = response.data
     return response_data
