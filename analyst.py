@@ -11,6 +11,7 @@ import os
 #from dotenv import load_dotenv
 import streamlit as st
 from pydantic import BaseModel, Field
+from pydantic import ValidationError
 from typing import List
 from pydantic_ai import Agent, RunContext, Tool
 from pydantic_ai.models.openai import OpenAIModel
@@ -237,15 +238,14 @@ async def get_analyst_agent_system_prompt(ctx: RunContext[State]):
 
 #%% Run Agent
 
-async def run_full_agent_async(user_query: str, dataset_path: str, dataset_meta: str) -> AnalystAgentOutput:
-    state = State(user_query=user_query, file_name=dataset_path, column_dict=dataset_meta)
-    response = await analyst_agent.run(
-        deps=state,
-        result_type=AnalystAgentOutput
-    )
-    response_data = response.data
-    return response_data
-
-# If you need a synchronous wrapper for Streamlit
 def run_full_agent(user_query: str, dataset_path: str, dataset_meta: str) -> AnalystAgentOutput:
-    return asyncio.run(run_full_agent_async(user_query, dataset_path, dataset_meta))
+    state = State(user_query=user_query, file_name=dataset_path, column_dict=dataset_meta)
+    response = analyst_agent.run_sync(deps=state)
+    try:
+        output = AnalystAgentOutput(**response.data)
+    except ValidationError as e:
+        print("Failed to parse agent output:", e)
+        raise
+
+    return output
+
