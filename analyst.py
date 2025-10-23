@@ -236,10 +236,16 @@ async def get_analyst_agent_system_prompt(ctx: RunContext[State]):
     return prompt
 
 #%% Run Agent
-def run_full_agent(user_query: str, dataset_path: str, dataset_meta: str) -> AnalystAgentOutput:
+
+async def run_full_agent_async(user_query: str, dataset_path: str, dataset_meta: str) -> AnalystAgentOutput:
     state = State(user_query=user_query, file_name=dataset_path, column_dict=dataset_meta)
-    response = analyst_agent.run_sync(deps=state, result_type=AnalystAgentOutput)
-    print(response)
+    response = await analyst_agent.run(
+        deps=state,
+        result_type=AnalystAgentOutput
+    )
     response_data = response.data
     return response_data
 
+# If you need a synchronous wrapper for Streamlit
+def run_full_agent(user_query: str, dataset_path: str, dataset_meta: str) -> AnalystAgentOutput:
+    return asyncio.run(run_full_agent_async(user_query, dataset_path, dataset_meta))
