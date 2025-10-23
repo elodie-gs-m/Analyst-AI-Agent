@@ -13,7 +13,7 @@ import tempfile
 from datetime import datetime
 from pathlib import Path
 import asyncio
-from analyst import run_full_agent, init_agent
+from analyst import init_agent, run_full_agent
 from dictionaries import load_column_dict
 import base64
 from typing import Optional
