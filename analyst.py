@@ -244,10 +244,13 @@ def run_full_agent(user_query: str, dataset_path: str, dataset_meta: str) -> Ana
     state = State(user_query=user_query, file_name=dataset_path, column_dict=dataset_meta)
     response = analyst_agent.run_sync(deps=state)
     try:
-        output = AnalystAgentOutput(**response.data)
+        # Use structured_output, not .data
+        output = AnalystAgentOutput(**response.structured_output)
     except ValidationError as e:
         print("Failed to parse agent output:", e)
+        print("Raw response:", response)
         raise
+
 
     return output
 
