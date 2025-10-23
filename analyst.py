@@ -26,8 +26,11 @@ from typing import Dict
 
 
 # %% Initialize Model
+from types import SimpleNamespace
 
-analyst_agent = None
+analyst_agent = SimpleNamespace()
+analyst_agent.system_prompt = "."
+
 def init_agent(api_key: str):
     global analyst_agent
     model = OpenAIModel('gpt-4.1', provider=OpenAIProvider(api_key=api_key))
