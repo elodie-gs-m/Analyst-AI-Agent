@@ -152,7 +152,7 @@ def main():
         
         with tab1:
             st.subheader("Analysis Report")
-            if analysis.analysis_report.replace("$", "\$"):
+            if analysis.analysis_report:
                 st.markdown(analysis.analysis_report)
             else:
                 st.warning("No analysis report available")
@@ -161,7 +161,7 @@ def main():
             st.subheader("Key Metrics")
             if analysis.metrics:
                 for i, metric in enumerate(analysis.metrics, 1):
-                    st.write(f"{i}. {metric}").replace("$", "\$")
+                    st.write(f"{i}. {metric}")
             else:
                 st.warning("No metrics calculated")
         
@@ -184,7 +184,7 @@ def main():
         
         with tab4:
             st.subheader("Conclusion & Recommendations")
-            if analysis.conclusion.replace("$", "\$"):
+            if analysis.conclusion:
                 st.markdown(analysis.conclusion)
             else:
                 st.warning("No conclusion available")
