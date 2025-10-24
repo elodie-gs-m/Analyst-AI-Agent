@@ -156,8 +156,6 @@ def init_agent(api_key: str):
     
 
 
-# %% Define Agent State
-
 
 
 # %%  Define Agent Tools
@@ -234,7 +232,6 @@ class AnalystAgentOutput(BaseModel):
     conclusion: str = Field(description="The conclusion of the analysis")
 
 
-#%% Create Agent's Prompt
 
 
 #%% Run Agent
