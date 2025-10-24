@@ -244,6 +244,9 @@ def run_full_agent(user_query: str, dataset_path: str, dataset_meta: str) -> Ana
     state = State(user_query=user_query, file_name=dataset_path, column_dict=dataset_meta)
     response = analyst_agent.run_sync(deps=state)
     raw_output = response.output
+    print("---- RAW OUTPUT FROM AGENT ----")
+    print(raw_output)
+    print("-------------------------------")
     try:
         parsed_data = json.loads(raw_output)
         output = AnalystAgentOutput(**parsed_data)
