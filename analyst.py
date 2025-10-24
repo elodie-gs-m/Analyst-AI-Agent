@@ -132,6 +132,7 @@ def init_agent(api_key: str):
             - **image_png_path**: Path to PNG visualization file (empty string if none generated)
 
             - **conclusion**: Concise summary with actionable recommendations
+            You must return a JSON object matching these headers.  Do not include any explanations or markdown outside the JSON object.
 
         **Quality Standards:**
             - Use professional, data-driven language
